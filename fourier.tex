@@ -1,0 +1,68 @@
+\section{Quantum Fourier Transform}
+Many of the transformations involved in mathematics or computer science involve calculations which are very difficult to be carried over classical computers. One such transformation is the discrete Fourier transform. This can be achieved in much efficient way in a quantum circuit as compared to its classical counterpart.}\\
+\newline
+In usual mathematical notation , discrete Fourier transform acts on a vector of complex numbers, $x_0,x_1 , \hdots , x_{N-1}$ ,of fixed length N, and outputs the another vector of complex numbers ,$y_0 , \hdots , y_{N-1}$ given by:
+$$y_k = \frac{1}{\sqrt{N}} \sum_{j=0}^{N-1} x_j e^{2\pi ijk/N}$$
+
+The quantum Fourier transform is defined in a similar way.The QFT on an orthonormal basis of vector $\ket{0} , \hdots , \ket{N-1}$ is defined to be a linear operator with the following action on the basis state:
+$$\ket{j} \to \frac{1}{\sqrt{N}}\sum_{k=0}^{N-1} \ket{k}e^{2\pi ijk/N}$$
+Equivalently , this can also be seen as 
+$$\sum_{j=0}^{N-1}x_j\ket{j} = \sum_{k=0}^{N-1}y_k\ket{k}$$
+\par
+We can also represent the Fourier transform in another way . Consider $N = 2^n$ and the basis is the orthonormal basis given by $\ket{0} , \hdots , \ket{2^n-1}$.The state j can be represented in binary representation as$j = j_1j_2j_3\hdots j_m$.Now the quantum Fourier transform of $\ket{j}$ is given by
+$$\ket{j_1j_2\hdots j_n} \to \frac{(\ket{0}+e^{2\pi i ~0.j_n}\ket{1})(\ket{0}+e^{2\pi i ~0.j_nj_{n-1}}\ket{1})\hdots (\ket{0}+e^{2 \pi i ~0.j_nj_{n-1}...j_1}\ket{1})}{2^{n/2}}$$
+
+\subsection{Phase estimation}
+The Fourier transform is a helpful technique to find the phase of a complex number. This technique, called phase estimation, is based on finding the phase $\phi$ of a complex number, $e^{2\pi i \phi}$ , which is the eigen value of an operator U corresponding to eigen vector $\ket{u}$. Using Fourier transform this can be achieved as follows.\par
+We work with two registers , the first one contains t qubits all set to $\ket{0}$ where t is determined by the accuracy upto which we would want to estimate $\phi$.\par
+The second register begins in the state $\ket{u}$ and contains as many bits as is necessary to store $\ket{u}$. The computation starts by applying a Hadmard gate to the first register followed by Controlled-U operation (applies U to target bit if control bit is set to 1) on the second register, with U raised to successive powers of 2.The action of this is to make the system in the state:
+$$ \frac{1}{2^{t/2}}(\ket{0} + e^{2\pi i 2^{t-1}\phi}\ket{1})(\ket{0}+e^{2\pi i 2^{t-2} \phi}\ket{1})\hdots (\ket{0} + e^{2\pi i 2^{0}\phi}\ket{1}) = \frac{1}{2^{t/2}}\sum_{k=0}^{2^t-1}e^{2\pi i k\phi}\ket{k} $$
+The second register is still in original state $\ket{u}$ and has not been mentioned above.\par
+Now we apply the \textit{inverse quantum Fourier transform} on the first register.The third stage of the phase estimation process involves the measurement of first register in the computational basis.\par This process gives a good estimate of $\phi$
+
+\subsection{Application : Order Finding}
+For a positive co-prime integers x and N,the order of x modulo N is defined as the smallest natural number r such that $x^r\equiv 1 \pmod N$. This problem is a hard problem classicaly in the sense that no alogirthm is known which can solve this in polynomial time in terms of $\log{N}$. We now demonstrate how phase estimation can be used to make an efficient quantum algorithm for order finding.\par
+The quantum algorithm for order-finding is just the phase estimation algorithm applied
+to the unitary operator
+$$U \ket{y} \equiv \ket{xy\pmod N}$$
+where y $\in {\{ 0,1\}}^L $ . We can also note that the states given by 
+$$\ket{u_s} = \frac{1}{\sqrt{r}} \sum_{k=0}^{r-1}e^{-2\pi i s k /r} \ket{x^{k}\pmod{N}}$$
+for$ 0\leq s \leq r-1 $ are eigenstates of U as:
+$$U\ket{u_s} = \frac{1}{\sqrt{r}}  \sum_{k=0}^{r-1}e^{-2\pi i s k /r} \ket{x^{k+1}\pmod{N}} = e^{2 \pi i s /r}\ket{u_s}$$.
+Now using phase estimation procedure for U , we can indeed find the value of s/r to a great accuracy . With the help of continued fractions and little bit more work , we can find r with an accuracy $ \geq \frac{1}{4}$
+
+\subsection{Application : Factoring (Shor's Algorithm)}
+One of the most powerful Quantum algorithm is the Shor's algorithm, which gives a non-trivial factor of a postive composite number N. For given N not a power of a smaller number , we can reduce the factoring problem into phase estimation problem using by using the following two theorems:\par
+\textbf{Theorem :}Suppose N is a L bit composite number then and x is a non trivial solution of $x^2 \equiv 1 \pmod{N},$ then at least one of gcd$(x-1,N)$ and gcd$(x+1,N)$ is a non trivial factor of N.
+\newline \par
+\textbf{Theorem :} Suppose $N = p_1^{a_1}\hdots p_m^{a_m}$ is the prime factorization of N.Let x be an integer chosen uniformly at random, subject to the condition that $1\leq x \leq N-1$ and x is coprime to N. Let r be the order of x modulo N, then:
+$$ p(r \text{ is even and } x^{r/2} \neq  -1(\text{mod }N)) \geq 1 - \frac{1}{2^m}$$
+Combining these two theorems , we can with great certainity find a non-trivial factor for any composite N , starting with the trvival cases and finally using the phase estimation technique . The procedure can be summarised as :
+\begin{enumerate}
+\item  If N is even, return the factor 2.
+\item Determine whether N = $a^b$ for integers  $a\geq1$  and $b \geq 2$, and if so return the factor a.
+\item Choose x in the range 1 to N-1. If gcd(x, N) $>$ 1 then return the factor gcd(x, N).
+\item Find order, r using order finding procedure
+\item If r is even and $x^{r/2} = -1(\text{mod }N)$ then compute gcd$(x^{r/2}  -1, N)$ and gcd$(x^{r/2} + 1, N)$, and test to see if one of these is a non-trivial factor, returning that factor if so. Otherwise, the algorithm fails.
+\end{enumerate}
+Lets take an example , of the number 15, to explain this algorithm:
+\item 15 is neither even , nor a power of a natural number.
+\item Choose x = 7 , then gcd(7,15) = 1, so we find the order r of x with respect to N . We create the 2 qubit-system in the state:
+$$\frac{1}{\sqrt{2^t}}\sum_{k=0}^{2^{t}-1}\ket{k}\ket{0} = \frac{1}{\sqrt{2^t}}\Big[\ket{0} + \ket{1} + \hdots + \ket{2^t-1} \Big]\ket{0}$$
+By using t Hadmard gates.Say t = 11. Computing and storing $x^k \text{ (mod }N)$ in the second bit we change the qubit state into:
+$$\frac{1}{\sqrt{2^t}}\sum_{k=0}^{2^t-1}\ket{k}\ket{x^k (\text{mod }N)} = 
+\frac{1}{\sqrt{2^{t}}}\Big[\ket{0}\ket{1} + \ket{1}\ket{7} + \ket{2}\ket{4} + \ket{3}\ket{13}+\ket{4}\ket{1} \hdots  \Big]
+$$
+
+\item Though we should now take the Inverse Fourier Transform on first bit, we can measure the second bit giving 4 values 1,7,4 and 13 with equal probabiltity. Say we measure 1 , this collapse the state into $\sqrt{\frac{4}{2^t}}\Big[\ket{0}+\ket{4}+\ket{8} \hdots  \Big]$
+\item Now we perform the Inverse Fourier transform. The Inverse Fourier transform of a state $\sum y_k \ket{k}$ is given by $\sum x_j\ket{j}$ where $x_j$ is given by :
+$$x_j = \frac{1}{\sqrt{2^t}}\sum_{k=0}^{k = 2^t-1}y_k e^{-2\pi i jk/2^t}$$
+\item In our case , $y_k$ is 0 $\forall k \neq 4*m $ , for some integer m. Hence $x_j$ can be reduced as 
+$$x_j = \frac{1}{\sqrt{2^t}}\sum_m \sqrt{\frac{4}{2^t}} e^{-2 \pi i j (4m)/2^t }$$
+We see by simple calculations that if j is not a multiple of 512, then the summation is equal to zero, while otherwise the expression simplifies to :
+$$x_j = \frac{2*512}{2048} = \frac{1}{2} $$
+and hence after the IFT, the state is given by $\frac{1}{2}\Big[\ket{0}+\ket{512}+\ket{1024}+\ket{1536} \Big]$
+Now we can measure 0,512,1024 and 1536 with equal probabilities. Say we measure as 512 , then $512/2048 = 1/4 $ and hence r = 4. Now it turns out that for our choice x=7 , r is even and $x^{r/2} (\text{mod }N) = 4(\text{mod }15) \neq -1(\text{mod }N) $ and hence one of gcd$(7^{4/2}  -1, 15)$ and gcd$(7^{4/2} + 1, 15)$ must be a factor of 15. We succeed with factor found as 3 (or 5 if chosen latter gcd)
+\subsection{Applications}
+The power of Quantum Parallelism is exhibited in the Quantum Fourier transform and its applications. Quantum Fourier transform also finds its applications in various possibilities such as finding discrete logarithms and period finding of a function.
+\newpage

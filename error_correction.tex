@@ -1,0 +1,79 @@
+section{Quantum Error Correction}
+Like the classical possibilities of errors in  bits, Quantum computers are also susceptible to errors. In fact, Quantum computers are more prone to errors than classical digital computers because the delicate and uncontrollable nature of Quantum systems. Thus if large scale quantum computers are to be made a reality, a theory of quantum error correction is a must. Before we proceed with quantum error correction , we first begin with classical errors and their correction.
+\subsection{Classical Error Correction}
+Classical error correction theory involves:
+\begin{enumerate}
+    \item Identification of type of error
+    \item Introduction of redundancy via encoding and
+    \item An error recovery procedure
+\end{enumerate}
+The first step is to identify the type of error. Such an understanding is represented by an error model. It describes the evolution of set of bits inside a channel. A channel can be movement of bits from one place to another or storage of bits or simply the passage of time. An identity channel is one which does not cause any change in the bits , or the change in bits is the Identity function.
+When errors given by an error model act on a register, we show this by $\xi^C$ acting on the same. Though in general the errors acting on bits can even be depended on each other , we analyse the simple models where we have independent errors. This is enough for our initial understanding of them.
+\par
+The second part involves introducing redundancy in bits to improve error correction accuracy.This can by done by adding extra bits to a \textit{logic bit} we wish to protect. Such a construction is called a codeword. The basic idea behind this is that even if an error occurs on a codeword , we can still recover the original bits as the other bits contain enough information of the original data. \par
+The third part is of the error recovery. The error recovery operation must be able to unambiguously distinguish between codewords after errors have acted on them. For a set of errors $\xi^C_i$ , to be possible to correct them , we must have 
+$$\xi^C_i (k_{enc}) \neq \xi^C_j(l_{enc}) ~~~~\forall k\neq l$$~
+else , the recovery operation will fail to rectify as two different errors on two different codewords give the same result, and its not possible to a priori know which error has acted. This condition is called the condition for classical error correction . Having the basics of classical error correction theory, we know see an example of the Classical three bit code method.
+\subsection{The Classical three bit code}
+Let us consider the simple bit flip channel which flips the bit with a probability of \textit{p} and leave it unaffected with probability \textit{1-p}. A simple strategy is to increase the number of bits by adding two extra bits, and encode each bit as:
+$$0 \to 000$$
+$$1 \to 111$$
+This can be done by first adding two ancillary bits to the logical bit and then copying the first bit into the other bit.\par
+To be able to design a recovery operation which acts on the codewords after the bit flip channel , we must have the condition of error correction to be satisfied. Thus , if we consider that at most a single bit flip occurs on each codeword, then we can recover our original register , and this is a set of correctable errors.\par
+The recovery operation can now be understood in the following way:\\
+Say the codeword after passing through error channel have all three bits equal to each other. Then we can be sure that the no error has occured. If otherwise, one of the bits is flipped , then we would have that other 2 bits are equal and that value must be the value of the bit before the error occured.\par
+Thus , we have a recovery model which can easily be implemented by noting that we just need to compare any 2 distinct pairs of bits.
+\\We now proceed with our discussion on Quantum error correction.
+\subsection{Error models for Quantum Computing}
+Like the Classical case , where in errors could have been depended on each other , we take the simpler case where they are not. However unlike the bit flip channel being the only possible channel in classical bits , qubits can have many possible errors such as rotation of phases, change of amplitudes. We describe two of such errors namely the bit flip and the phase flip.
+\\
+\subsubsection{Three bit quantum code for Bit flip error}
+The bit flip channel operating on a system can be interpreted as applying the Identity gate with a probability of 1-p and applying the bit flip , X gate with a probability of p.
+\\
+\textbf{Encoding:}\\
+Unlike the repetetion of bits in the classical encoding , we cannot copy every random qubit , as this would violate the no-Cloning theorem. We however can repeat the computational basis of bits , as they form an orthogonal basis. This can be done by an unary operator U, which acts on $\ket{\psi}$ tensed with two ancilla bits initially set to $\ket{0}$, to encode the into $\ket{\psi_{enc}}$ given as:
+$$\ket{\psi_{enc}} = U\ket{\psi}\ket{0}\ket{0}$$.
+The unary operator U , is similar to the classical case , where it encodes the qubit $\ket{0}$ as $\ket{000}$ and qubit $\ket{1}$ as $\ket{111}$. For the superposition of these two states , it encodes as:
+$$\alpha\ket{0}+\beta\ket{1} \xrightarrow[]{U} \alpha \ket{000} + \beta\ket{111}$$
+One may not that this is not the same as copying the qubit(that would mean $\alpha\ket{0}+\beta\ket{1}\to ({\alpha\ket{0}+\beta\ket{1}})^{\otimes 3}$ , thus not violating the no-Cloning theorem.\\ \newline
+\textbf{Recovery operation:}\\
+Similar to clasical case, we can apply the Toffoli gate , or the CCNOT gate , where the first bit is flipped if both the control bits ( in this case the ancillary bits) are set to 1, which can be checked before using CNOT gates. This way we can rectify a bit flip error on a qubit. \\ \par
+The given procedure is just the classical analogue of the three bit code for single bit flip error , called as the \textbf{Three bit Quantum code.}
+\subsubsection{Three bit quantum code Phase flip error}
+
+The phase flip channel operating on a system can be interpreteed as applying the Identity gate with a probabilty of 1-p and applying the phase flip Z gate with a probability of p. There is no classical analogue of the phase flip , however we can in fact change a phase flip error to a bit flip error by changing our computational basis.
+If we work in the Hadmard basis states then we see that in fact a phase flip channel is a bit flip channel in this basis, 
+$$ \ket{+} = \frac{\ket{0}+\ket{1}}{\sqrt{2}} \xrightarrow[]{Z} \frac{\ket{0}-\ket{1}}{\sqrt{2}} = \ket{-} $$ 
+$$ \ket{-} = \frac{\ket{0}-\ket{1}}{\sqrt{2}} \xrightarrow[]{Z} \frac{\ket{0}+\ket{1}}{\sqrt{2}} = \ket{+} $$ 
+\textbf{Encoding and Recovery operation:}\\
+Based on the previous discussion , all it remains to encode in the computational basis of $\ket{+}$ and $\ket{-}$. This can be done by applying the Hadmard gates to each bit ,  to our previous encoding operator. Thus our encoding operation now encodes as:
+$$\alpha\ket{0} +\beta \ket{1} \xrightarrow[]{U} \alpha\ket{+}\ket{+}\ket{+}+ \beta\ket{-}\ket{-}\ket{-}$$
+And similarly, the recovery operation first checks for parities of the qubits in the Hadmard basis , and then we switch back to the standard basis by applying Hadmard gates again. Thus making it almost the same as the bit flip channel.
+\subsection{The Nine qubit Shor code}
+The three qubit bit-flip and phase-flip errors can be combined to give the nine-qubit code which corrects bit-flip or phase flip on any one of the nine qubit. It also allows for the correction of simultaneous bit and phase flip on the same qubit. Thus , including the Identity error operator in the basis of errors , we can now correct all possible type of errors. Encoding for the Shor code works in two stages. First each qubit is in the three qubit phase-flip code. Next , each of the qubits in the three phase-flip code is now encode as the three qubit bit-flip code. This can be summarised as:
+$$\ket{0} \xrightarrow[]{1^{st}} \ket{+}\ket{+}\ket{+} \xrightarrow[]{2^{nd}} \frac{(\ket{000}+\ket{111})^{\otimes 3}}{2\sqrt{2}}$$
+
+Suppose we subject these codewords to both the bit-flip and the phase-flip channels, with the restriction that there is at most one bit flip and at most one phase flip. We can view the combined effect as a single channel, whose effect is a bit flip with some amplitude, and a phase flip with some other amplitude, and a combination of both.
+In a way analogous to the bit-flip channel seen previously, we can see that bit flip X operator on any of the nine qubits will move the codeword to an orthogonal subspace. The phase flip Z operator on any of the qubit will also move the code to an orthogonal subspace through a sign change between the triplets of qubits. A peculiarity of this code not encountered in the three-bit codes is that applying the Z error on any member of the triplet will move the code to the same subspace. This will not prevent error correction as we only need to know where the code has moved to undo the error.
+Again , if both X and Z errors act together , we get another orthogonal subspace . Thus no element of can infact belong to more than one error , and thus we satisfy the Condition of error correction. \\
+Continuing  , the recovery operation can again be performed by noticing now that to recitfy the bit flip error we need to check the parity of the individual subset of the three qubits , while for phase flip  , we need to check the parity of the entire subset and compare it with others , and thus we can make a circuit which implements exactly this. 
+\newpage
+\section{Conclusion}
+Before concluding , I want to discuss an interesting branch of Quantum Computation , namely Quantum cryptography. My interest in Teleporation and Quantum Error correction made me read about certain protocols in Cryptography. One of them is the BB84 protocol.\\
+\textbf{BB84 protocol:}\\
+Say Alice wants to send a private key to Bob. To do this she starts with a bit string \textbf{a}. Alice then encodes \textbf{a} with a bit string \textbf{b} and sends the qubit:
+$$\ket{\psi} = \otimes_{i=1}^{n} \ket{\psi_{a_ib_i}};
+$$
+where $\psi_{a_ib_i}$ is the encoded string in different basis based on $a_i$ and $b_i$ as:
+$$\ket{\psi_{00}}= \ket{0}$$
+$$\ket{\psi_{10}}= \ket{1}$$
+$$\ket{\psi_{01}}=\ket{+}$$
+$$\ket{\psi_{11}}=\ket{-}$$
+Note that the bit \textbf{$b_i$} is what decides which basis \textbf{$a_i$} is encoded in (either in the computational basis or the Hadamard basis). The qubits are now in states that are not mutually orthogonal, and thus it is impossible to distinguish all of them with certainty without knowing \textbf{b}.
+Now Alice sends the qubit through a public channel $\xi$ to Bob. If Bob receives the same then he can be sure that an eavesdropping agency, Eve cannot be having the exact same copy of the (due to the No-Cloning Theorem as qubits are in non-orthogonal states). \\ \\
+Now Bob generates a string $\text{\textbf{b}}'$ of the same length as \textbf{b} and then measures the qubits he recieved from Alice, in the space of classical or Hadmard basis based on his $\textbf{b'}$ , making a bitstring $\textbf{a}'$. He now announces that he received Alice's message. Now Alice anounces her string \textbf{b} , and now Bob and Alice discard all the bits of \textbf{a}and \textbf{a'} and discard bits where \textbf{b}and $\textbf{b}'$ do not match. \newline \newline
+From the remaining k bits where both Alice and Bob measured in the same basis, Alice randomly chooses k/2 bits and discloses her choices over the public channel. Both Alice and Bob announce these bits publicly and run a check to see whether more than a certain number of them agree. If this check passes, They now have a private key to use for information reconciliation and privacy amplification techniques to create some number of shared secret keys. Otherwise, they cancel and start over.
+
+\newline
+\newline
+With this we conclude our report. Surely there is no end to the fascination provided to us by Quantum Mechanics , and in specific, to Quantum Computing!

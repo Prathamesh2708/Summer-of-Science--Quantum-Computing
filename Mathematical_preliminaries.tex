@@ -1,0 +1,39 @@
+\section{Mathematical Preliminaries}
+Quantum Computation depends heavily on the 
+understanding of linear algebra and we first cover some preliminaries
+on the same.
+\subsection{Vector Spaces}
+The most important part of linear algebra is the notion of a vector which we will denote by the bra-ket notation, $\ket{\cdot}$.
+The vector is an element of a vector space which satisfies certain condition.
+
+For a subspace of this vector-space, we can define a set of linearly independent vectors, which span the sub-space.Such a set is called a basis of the subspace.All bases 
+
+All our calculations on qubits(the quantum analogue of bit) , are essentially calculations on vectors. 
+
+\subsection{Linear Operators}
+Any function( or evolution as we will further note) which maps a vector-space \textbf{V} to a vector-space \textbf{W} and satisfies linearity i.e.
+
+$$ A(\sum a_i \ket{\psi _i}) = \sum a_i A \ket{\psi _i} $$
+is considered as a linear operator. By Linear Algebra , operators on vector spaces can be defined using Matrices. The matrix which represents $A: \textbf{V} \rightarrow \textbf{W}$ with respect to certain basis vectors in \textbf{V} and \textbf{W} is called the Matrix of linear transformation of A
+\subsection{Inner and Outer products}
+An inner product of a vector space \textbf{V} is defined as a function from V \textbf{x} V to C if it satisfies
+\begin{enumerate}
+\item $\braket{v|w} = (\braket{w|v})^*$
+\item $\braket{v|\sum_j a_j w_j} = \braket{\sum_j a_j v w_j }$
+\item $\braket{v|v}\geq 0$ with equality iff $\ket{v} = 0$
+\end{enumerate}
+We define an orthonormal basis of a sub-space as a basis whose vectors, $\ket{v}$ have a length of 1 i.e. $\sqrt{\braket{v|v}}=1$
+and which are orthogonal to each other , $\braket{v|w}_{v\neq w} = 0$
+Every finite dimensional vector space , has an orthonormal basis , and a basis can be found by the Gram-Schmidt Orthogonalisation process.Working in an orthonormal basis , we can define the inner product of two vectors $\ket{v}$ and $\ket{w}$ as 
+$$  \braket{v|w} =  \begin{bmatrix}v_1^* ~v_2^* \hdots ~v_n^*\end{bmatrix}\begin{bmatrix} w_1 \\ w_2\\ \vdots \\w_n
+\end{bmatrix} $$
+Similarly we define the outer product on an inner product space as
+a function which takes 2 vectors $\ket{v}$ and $\ket{w}$ and gives $ \ket{v}\bra{w}$, which acts on any other vector $\ket{a}$ to give $\braket{w|a}\ket{v}$. \\
+The outer product notation is useful when defining matrices , as we shall further note in next section.
+
+\subsection{Eigenvalues  and Eigenvectors}
+An eigenvector for a linear operator \textbf{A} is a non-zero vector $\ket{v}$ such that \\$A\ket{v} = \lambda \ket{v}$ for some complex number $\lambda$.This complex number is called the Eigenvalue corresponding to the Eigenvector $\ket{v}$\\
+A necessary and sufficient condition for a complex number $\lambda$ to be an eigenvalue of a linear operator \textbf{A} is :
+$$ \det |A-\lambda I| = 0$$
+An linear operator \textbf{A} is called diagonalisable if there exists an orthonormal basis composed of eigenvectors of A. Such an operator can be defined in terms of the outerproducts of thse vectors as:
+$$ A = \sum_j \lambda_j \ket{v_j}\bra{v_j}$$

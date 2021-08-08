@@ -1,0 +1,37 @@
+\section{EPR Pairs and Entanglement}
+The EPR pairs have a special significance in quantum computing for example in teleportation and super-dense coding. The reason of their special significance is that when a measurement is performed on a single bit, we get the information of the both the bits of the collapsed state. The EPR pairs are also called Bell states.
+\par
+The EPR pairs are given by:
+$$\ket{\beta_{00}} = \frac{\ket{00}+\ket{11}}{\sqrt{2}}  $$
+$$\ket{\beta_{01}} = \frac{\ket{01}+\ket{10}}{\sqrt{2}}  $$
+$$\ket{\beta_{10}} = \frac{\ket{00}-\ket{11}}{\sqrt{2}}  $$
+$$\ket{\beta_{11}} = \frac{\ket{01}-\ket{10}}{\sqrt{2}}  $$
+An easier way to remember this is:
+$$\ket{\beta_{xy}} = \frac{\ket{0,y} + (-1)^x \ket{1,1 -y}}{\sqrt{2}}$$
+
+This also explains a way of making them, by passing of $\ket{x}$
+through a Hadmard gate , followed by a CNOT gate with $\ket{y}$ as the target bit.
+\subsection{Teleportation}
+Say Alice and Bob share an EPR pair where in , Alice possess the first qubit of the pair while Bob possess the second qubit. The task of quantum teleportation implies, given an unknown $\ket{\psi}$ in possession of Alice , she must teleport it to Bob , given that she can convey only classical bits of information to him. She can do so in the following way:\\
+Lets say the EPR pair shared by Alice and Bob is
+$$\ket{\beta_{01}} = \frac{\ket{01}+\ket{10}}{\sqrt{2}}  $$
+And the unknown state $\ket{\psi}$ be represented by 
+	$$\ket{\psi} = a\ket{0} + b\ket{1}$$
+Then a circuit describe by Figure 2 is essentially what we need.
+Proof of the teleportation circuit:\\  
+The state of the sytem just before any computation is given by:
+$$\ket{\psi} = \frac{a\ket{0}(\ket{01}+\ket{10}) + b\ket{1}(\ket{01}+\ket{10})}{\sqrt{2}}$$
+
+\subsection{Super Dense Coding}
+Suppose Alice wants to share two bits of information to Bob , given that they are distant away while they share an EPR pair and Alice can interact only with qubit. Is this possible?\\
+The answer to the question is infact Yes.\\Alice does so in the following way:\\
+\newline
+Suppose the state/ EPR shared by Alice and Bob is 
+$$\ket{\psi} = \frac{\ket{00}+\ket{11}}{\sqrt{2}}$$
+where Alice is in possession of the first bit while Bob is in the possession of the second bit.\\
+Now if Alice wishes to send the bit string '00', then she does nothing to her bit, if she wishes to send '01', then she applies a phase shift, Z gate to her bit.If she wishes to send '10', then she just applies the bit flip X gate, anf finally if she wishes to send '11' she applies X gate followed by Z gate to her bit.The result of all this can in fact be summaried as:
+$$00: \ket{\psi} \to \ket{\beta_{00}}$$
+$$01: \ket{\psi} \to \ket{\beta_{01}}$$
+$$10: \ket{\psi} \to \ket{\beta_{10}}$$
+$$11: \ket{\psi} \to \ket{\beta_{11}}$$
+Indeed, we have the 4 EPR pairs. Now if Alice sends her qubit to Bob then Bob has possession of both the qubits. Notice that EPR pairs form an orthonormal basis of the two-qubit space. Hence by making a measurement in the Bell basis, Bob can identify the which bit string was sent by Alice.

@@ -1,0 +1,89 @@
+\section{Postulates of Quantum Mechanics}
+Quantum systems are guided by a set of 4 postulates:
+\subsection{State space}
+In all the discussions previous to this, we never actually mentioned why we referred to the qubit as a vector. The reason is the following postulate.\par
+
+\textbf{Postulate 1}:\emph{ Associated to any isolated physical system is a complex vector space with inner product (that is, a Hilbert space) known as the state space of the system. The system is completely described by its state vector, which is a unit vector in the system’s state space.}\par
+This postulate tells us that any quantum system, can be described in terms of a vector spanned by some basis of vectors. This postulate doesn’t tell us much on how the system manifests, it just tells us the existence of a vector which can describe a state of the system.
+The basis of vectors also completely depends on the system being discussed. For example , in the case of Quantum Computing we generally have the vector space spanned by qubits, in case of Quantum Mechanics for a particle in a box system , we have certain Eigenstates and particle is considered to be in superposition of those states.
+\subsection{Evolution of state}
+In section 3.2 , we noted that single qubit gates/operators must be unitary.This is true in general i.e.
+ 
+\par
+
+\textbf{Postulate 2}: \textit{The evolution of a closed quantum system is described by a unitary transformation. That is, the state $\ket{\psi'}$ of the system at time t1 is related to the state $\ket{\psi}$ of the system at time t2 by a unitary operator U which depends only on the times t1 and t2,}
+
+				$$\ket{\psi'} = U\ket{\psi} $$
+\par
+The postulate also has a clause for the requirement of closed quantum system, i.e. a system without energy losses. Having systems meeting this criteria is usually difficult , and so we sometimes use a region of space beyond which the energy changes are negligible.
+\\
+This postulate thus helps us write any possible evolution, whether by gates or noise or by other means, by simply Unitary operator. A more refined version of this postulate can be given to describe the evolution of a quantum system in continuous time. From the refined postulate we can get the above mentioned statement.\newpage
+\textbf{Postulate 2$'$}: \textit{The time evolution of the state of a closed quantum system is described by the Schrodinger equation,}
+$$ i\hbar \frac{d\ket{\psi}}{d t} = H \ket{\psi}$$
+\textit{In this equation, $\hbar$ is a physical constant known as Planck’s constant whose value must be experimentally determined. The exact value is not important to us. In practice, it is common to absorb the factor into H, effectively setting  = 1. H is a fixed Hermitian operator known as the Hamiltonian of the closed system.}
+\par If we know the Hamiltonian then we can solve for the dynamics of the system for a given time interval. However, most systems that we consider have highly complicated Hamiltonians. However for our study, we just state the Hamiltonian for a given system without giving the derivation/ reason of the same.
+
+\subsection{Quantum Measurement}
+Till now we have seen the evolution of the state in a closed quantum system ,but there are times when we perform some measurements on the system. The result of measurement on the state of the system is given by the following postulate.\par
+\textbf{Postulate 3}:\textit{Quantum measurements are described by a collection {$M_m$} of measurement operators. These are operators acting on the state space of the system being measured. The index m refers to the measurement outcomes that may occur in the experiment. If the state of the quantum system is $\ket{\psi}$
+immediately before the measurement then the probability that result m occurs is given by}
+$$ p(m) = \braket{\psi|M_m^{\dagger} M_m|\psi} ,$$\par
+\textit{and the state of the system after the measurement is 
+}
+$$ \frac{M_m \ket{\psi}}{\sqrt{\braket{\psi|M_m^{\dagger} M_m|\psi}}}$$
+\par \textit{The measurement operators satisfy the completeness equation}
+$$ \sum_m M_m^{\dagger}M_m = I$$
+\par 
+The completeness equation expresses the fact that probabilities sum to one:
+$$1 = \sum_m p(m) = \sum_m \braket{\psi|M_m^{\dagger} M_m|\psi} 
+= \braket{\psi | \sum_m M_m^{\dagger}M_m|\psi}$$
+The equation being satisfied by all for all $\ket{\psi}$.\par
+Using postulate 3 we can deduce that a measurement in the computational basis by measurement operators $M_0 = \ket{0}\bra{0}$
+and $M_1 = \ket{1}\bra{1}$, collapses the system to either $\ket{0}$
+or $\ket{1}$ upto a global phase factor. 
+
+\subsection{Composite system}
+We now formally describe the state of system composed of multiple systems. The state of such as system is given by postulate 4.\par
+
+\textbf{Postulate 4}:\textit{: The state space of a composite physical system is the tensor product of the state spaces of the component physical systems. Moreover, if we have systems numbered 1 through n, and system number i is prepared in the state $\ket{\psi_i}$, then the joint state of the total system is $\ket{\psi_1} \otimes \ket{\psi_2}\otimes \hdots \otimes \ket{\psi_n}$}
+\par \hspace{10px} \break We thus define the state of system consisting of multiple states using the tensor product of the individual state vectors.
+\newline 
+
+\subsection{Density operator}
+Instead of formulating  the postulates in terms of the state vector we can also reformulate them using the density operator.
+The density operator of system which is in one of a number of states $\ket{\psi_i}$, with a probability of $p_i$ , is given by the equation:
+$$\rho = \sum_i p_i\ket{\psi_i}\bra{\psi_i}.$$
+All postulates of quantum mechanics can be reformulated in terms of the density operator, also called as density matrix.Suppose we want to describe the postulate of evolution. If the system was in a state $\ket{\psi_i}$ with a probability of $p_i$ then after the evolution it will be in a state U$\ket{\psi_i}$ with the same probability.
+The density matrix due to the evolution would change as follows:
+$$ \rho = \sum_i p_i\ket{\psi_i}\bra{\psi_i} \to \sum_i p_iU\ket{\psi_i}\bra{\psi_i}U^{\dagger}  = U\rho U^{\dagger}$$
+
+Measurment also can be performed in a similar way. Suppose we perform measurements described by measurement operator $M_m$. If the initial state was $\ket{\psi_i}$,then the probability of getting result m is:
+$$p(m|i) = \braket{\psi_i|M_m^{\dagger}M_m|\psi_i} = tr(M_m^{\dagger}M_m \ket{\psi_i}\bra{\psi_i})$$
+the overall probability being given by 
+$$p(m) = \sum_i p(m|i)p_i = \sum_i p_itr(M_m^{\dagger}M_m \ket{\psi_i}\bra{\psi_i}) = tr(M_m^{\dagger}M_m\rho)$$
+and the density operator after the measurement m is given by :
+$$\rho_m = \sum_i \frac{p_i M_m \ket{\psi_i}\bra{\psi_i}M_m^{\dagger}}{tr(M_mM_m^{\dagger}\rho)} = \frac{M_m \rho M_m^{\dagger}}{tr(M_mM_m^{\dagger}\rho)} $$.
+\par 
+Lastly the fourth postulate of composite systems can be formulated as the state space being defined as the tensor product of all individual density matrices.\newpage
+The density matrix notation has a characteristic use which is of the reduced density operator. Given physical systems A and B , whose state is described by density operator $\rho^{AB}$ , the reduced density operator of A is given by:
+$$ \rho ^A = tr_B(\rho^{AB}) $$
+where $tr_B$ is the partial trace of the system over system B.The partial trace is defined by :
+$$tr_B (\ket{a_1}\bra{a_2}\otimes \ket{b_1}\bra{b_2}) = \ket{a_1}\bra{a_2} tr(\ket{b_1}\bra{b_2})$$
+It does not seem that the reduced density operator is of any relation to the system A. However, upon performing measurements, we do get the same results as what we would have otherwise got. \par
+The density operator is a useful tool in quantum systems , especially due to the reduced density operation.
+
+\subsection{No Cloning Theorem}
+Though this theorem is not a postulate of Quantum Mechanics , we give a brief account of this theorem.\\\textbf{The theorem states that there is no Quantum circuit which can copy an unknown arbitrary quantum state}.
+\\
+The proof of this theorem follows from contradiction and using postulate 2 ,  on evolution.\par
+Say there exists a circuit which takes a system $\ket{\psi}$ , which is to be copied, and an ancilla of bits prepared in the state $\ket{0}$. The combined system of is given by $\ket{\psi}\ket{0}$.
+The circuit outputs the ancilla of the system in the state $\ket{\psi}$.Since the circuit is essentially an evolution, it can be represented by a unitary operator, U. So:
+
+$$ U \ket{\psi}\ket{0} = \ket{\psi}\otimes \ket{\psi}$$
+Lets say there is another state $\ket{\Phi}$ to be copied then,
+$$ U \ket{\Phi}\ket{0} = \ket{\Phi} \otimes \ket{\Phi}$$
+Taking inner products of the above equations gives:
+$$\bra{0}\braket{ \Phi|U^{\dagger}U|\psi }\ket{0} = \bra{\Phi}\braket{\Phi|\psi}\ket{\psi}  $$
+which simplifies to 
+$$\braket{\Phi|\psi} = \braket{\Phi|\psi}^2$$
+Now this equation is true only if $\ket{\Phi}$ and $\ket{\psi}$ were either equal or orthonormal.This is not true in general , hence a completely generalised copying circuit cannot be made. Note that we used ancilla in state $\ket{0}$, though it does not matter in what state we keep the ancilla.

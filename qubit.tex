@@ -1,0 +1,57 @@
+\section{Qubit : The Quantum bit}
+The quantum analogue of the classical bit is the qubit. Like the classical bit has 2 possible values, 0 or 1 , we define two vectors:
+$$\ket{0} = \begin{bmatrix} 1\\ 0 \end{bmatrix} ~~~~and  ~~~~\ket{1} = \begin{bmatrix} 0\\ 1 \end{bmatrix} $$ 
+to represent states of qubit. However, unlike the classical bit which can exists in either of the two states at a given time , the qubit can exists in a superposition of both states. This seems natural as a qubit essentially represents a vector corresponding to the  state of a system. Following the above notation of $\ket{0}$ and $\ket{1}$ , we can write any single qubit state $\ket{\psi}$ as \begin{equation} \ket{\psi} = \alpha \ket{0} + \beta \ket{1} \end{equation}
+$$where  ~~|\alpha|^2 + |\beta|^2 = 1 $$ for a normalized state $\ket{\psi}$
+The basis of $\ket{0} $ and $\ket{1}$ , as of any other vector space, is not the only basis of vectors. It is just the standard basis. We may wish to work in different basis of vectors depending on the computations involved. One another basis which we will be using is:
+$$\ket{+} =\frac{1}{\sqrt{2}}\ket{0}+\frac{1}{
+ \sqrt{2}}\ket{1} and \ket{-} = \frac{1}{\sqrt{2}}\ket{0}-\frac{1}{
+ \sqrt{2}}\ket{1} $$
+We may switch between any basis , depending on the computations involved.
+
+\subsection{Bloch-Sphere representation}
+We can also represent equation (1) as 
+$$ \ket{\psi} = e^{i\gamma} \left(\cos{\frac{\theta}{2}}\ket{0} + e^{i\phi}\sin{\frac{\theta}{2}}\ket{1}\right) $$
+where $\gamma$ is the overall phase constant, called global phase.
+We will further note that the presence of global phase doesn't alter our measurements and it suffices to perform computations on 
+$$ \ket{\psi}  =  \cos{\frac{\theta}{2}}\ket{0} + e^{i\phi}\sin{\frac{\theta}{2}}\ket{1}$$
+We can denote this $\ket{\psi}$ in a unit sphere in the manner as shown in figure 1. \\
+\begin{figure}[h!]
+\centering
+\includegraphics[width=5cm]{Bloch-sphere.jpg}
+\caption{Bloch-sphere representation of a qubit}
+\end{figure}
+In the figure ,$\theta $ represents the angle from z axis and $\phi$ represents angle between projection of $\ket{\psi}$ on x-y plane and the x axis. This definition of $\theta$ and $\phi$ is well known as the polar notation in general. \par
+The Bloch-Sphere notation is very helpful as any computation involving single qubit , can be thought of as a rotation from the original direction of $\ket{\psi}$.
+
+\subsection{Single qubit gates}
+As opposed to the only single bit gate in classical world , the NOT gate, Quantum computation have many possible gates. This comes from the fact that single bits can be present only in 2 possible states , while qubits are in general in a superposition of states.
+Also , every gate acts on the qubits in a linear manner. For example, the NOT gate applied on a $\ket{\psi} = \alpha \ket{0} + \beta \ket{1}$ gives the result $\alpha\ket{1} + \beta \ket{0}$.This behaviour of Quantum gates is emperical , however non-linearity of operators would imply certain improbable events such as communication faster than light.\par
+The NOT gate described above can be realised as an operator given by
+$$ X ~~= ~~ \ket{0}\bra{1} + \ket{1}\bra{0} $$
+or equivalently, in matrix form as:
+$$X ~~= ~~ \begin{bmatrix}0 & 1\\1 & 0 \end{bmatrix}$$ \par
+The output of a gate must satisfy the normalisation condition.This 
+imposes that the gate must be a Unitary matrix \textbf{U}, a matrix satisfying $U^{\dagger}U = I$.Thus in theory, infinitely many matrices can be used as gates.Two important gates which we will use are:
+$$Z = \ket{0}\bra{0} - \ket{1}\bra{1} = \begin{bmatrix}1 &0\\0&-1 \end{bmatrix}$$
+which has the action of leaving $\ket{0}$ untouched while flipping the sign of $\ket{1}$, and the Hadmard gate :
+$$H = \frac{X+Z}{\sqrt{2}}= \frac{1}{\sqrt{2}}\begin{bmatrix}1&1\\1&-1 \end{bmatrix}$$
+which has the action of
+    $$H \ket{0} = \frac{\ket{0}+\ket{1}}{\sqrt{2}} = \ket{+}$$
+    $$H \ket{1} = \frac{\ket{0}-\ket{1}}{\sqrt{2}} = \ket{-}$$
+\subsection{Multiple qubits}
+We define a system of more than one qubits by the tensor product of the individual qubits.We define the tensor product of 2 qubits as 
+$\ket{A}\ket{B} = \begin{bmatrix}a_1 B\\a_2B\\ \vdots \\ a_nB  \end{bmatrix}$ where $a_1 , a_2 ,\hdots ,a_n$ compose the vector $\ket{A}$. We denote the tensor product of $\ket{A}$ and $\ket{B}$
+by $\ket{A}\ket{B}$ or simply by $\ket{AB}$
+Thus, like the classical 2 bit system is made up of 00, 01, 10 or 11,the 2qubit system is made up of a superposition of $\ket{00},\ket{01},\ket{10}$ and $\ket{11}$ and can thus can be represented as :
+$$\ket{\psi} = \alpha_{00} \ket{00} + \alpha_{01} \ket{01} + \alpha_{10} \ket{10} + \alpha_{11}\ket{11}$$
+\par
+One important class of the 2 qubit system are the EPR pairs, named after the scientists \textbf{E}instein , \textbf{P}odolsky and \textbf{R}osen. The pairs are responsible for some interesting phenomenon such as Teleportation and Super Dense Coding.
+
+\subsection{Multiple Qubit Gates}
+Like the single qubit gates , a multiple qubit gate must be represented by a unitary matrix. One important difference between the Classical and Quantum world is reflected in these gates. Classical gates such as `AND' and `OR' gates are not reversible, we cannot predict what was the input for a given output, however by postulates of Quantum Mechanics every operator must be defined by an invertible matrix which makes every operator a reversible operation.\par
+We can however define the XOR or C-NOT (Controlled NOT) gate as a gate which leaves the second bit if the first bit is 0 while flips it if the first bit is 1. The first bit is called the control bit and the second is called the target bit.
+Such a gate can be given by the matrix:
+$$\emph{U} = \begin{bmatrix}1 & 0& 0&0\\0&1&0&0\\0&0&0&1\\0&0&1&0 \end{bmatrix} $$ One may verify that indeed the matrix satisfies the following operations:
+$$U\ket{00} = \ket{00} , U\ket{01} = \ket{01} , U\ket{10} = \ket{11} and ~~U\ket{11}=\ket{10}$$
+To define gates such as AND , we define the CCNOT gate, which operates on 2 bits of data.
